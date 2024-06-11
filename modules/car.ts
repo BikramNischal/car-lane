@@ -37,6 +37,14 @@ class Car {
 	moveLeft(){
 		this.x -= this.move;
 	}
+
+	moveDown(){
+		this.y += this.move;
+	}
+	
+	resetY(){
+		this.y = 0-150;
+	}
 }
 
 

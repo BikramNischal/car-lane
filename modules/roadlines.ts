@@ -40,14 +40,16 @@ class Line {
 
 const laneWidth = canvasWidth/4;
 
-
+interface Data{
+	[index:number]: number;
+}
 
 // center X-axis of each lane 
-const laneData = {
-	firstLane: laneWidth/2, 
-	secondLane: laneWidth/2 + laneWidth,
-	thirdLane: laneWidth/2 + 2*laneWidth,
-	forthLane: laneWidth/2 + 3 * laneWidth,
+const laneData:Data = {
+	'0': laneWidth/2, 
+	'1': laneWidth/2 + laneWidth,
+	'2': laneWidth/2 + 2*laneWidth,
+	'3': laneWidth/2 + 3 * laneWidth,
 }
 
 // lane dividers 
