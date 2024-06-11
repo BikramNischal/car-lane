@@ -4,10 +4,32 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>Car Lane</title>
+    <link rel="stylesheet" href="/styles/style.css">
   </head>
+
   <body>
-    <div id="app"></div>
+    <div class="start-window window">
+      <h1 class="window-text">
+        Car Lane
+      </h1>
+    <button class="btn btn--start">
+      Start Game
+    </button>
+    </div>
+    <div class="game-window window">
+      <canvas id="canvas">
+  
+      </canvas>
+    </div>
+    <div class="end-window window">
+      <h1 class="window-text">
+        Game Over
+      </h1>
+      <button class="btn btn--restart">
+        Restart Game
+      </button>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
