@@ -3,7 +3,7 @@ import { laneData} from "../modules/roadlines.ts";
 import generateRandomNumber from "../utils/generaterandom.ts";
 
 // list of enemy image src
-const enemySrc = ["./enemy1.png", "./enemy2.png"];
+const enemySrc = ["./enemy1.png", "./enemy2.png", "./enemy3.png"];
 
 export type Enemy = {
 	car: Car;
@@ -21,16 +21,9 @@ export default function generateEnemy() {
         // creates car with postion x,y, width, hegith and image
         // here x position = lanecenter - imagewidth/2
         //similary y postion = canvasHeight - imageheight
-        const enemyCar = new Car(laneData[lane] - 75, 0 - 150, 150,150, enemySrc[imgIndex]);
+        const enemyCar = new Car(laneData[lane] - 50, 0 - 150, 100,150, enemySrc[imgIndex]);
         const enemy:Enemy = {car: enemyCar, laneNo: lane};
         enemyList.push(enemy);
     }
     return enemyList;
 }
-
-const enemy: Enemy = {
-    car: new Car(laneData[2]-75, 0-150,150,150,enemySrc[0]),
-    laneNo: 2
-}
-
-export {enemy};

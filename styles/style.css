@@ -15,7 +15,6 @@ body{
   margin:0 auto;
   width:95%;
   height: 95%;
-  border: 1px solid red;
 }
 
 .window{
@@ -30,12 +29,12 @@ body{
   gap : 50px;
 }
 
-/* .start-window{
+.start-window{
   background-image: url("../public/home-background.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-} */
+}
 
 .window-text{
   color:#fc6603;
