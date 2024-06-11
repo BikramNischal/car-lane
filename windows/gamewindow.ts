@@ -1,9 +1,6 @@
 const startScreen =  document.querySelector(".start-window") as HTMLDivElement;
 const gameScreen = document.querySelector(".game-window") as HTMLDivElement;
 const endScreen = document.querySelector(".end-window") as HTMLDivElement;
-
-const startBtn = document.querySelector(".btn--start") as HTMLButtonElement;
-const endBtn = document.querySelector(".btn--restart") as HTMLButtonElement;
  
 function showStartScreen(){
     startScreen.style.display = "flex";
@@ -25,8 +22,6 @@ function showEndScreen(){
 
 // start button on click display canvas 
 
-startBtn.onclick = showGameScreen;
-endBtn.onclick = showGameScreen;
 
 
 export {showEndScreen, showStartScreen, showGameScreen};
