@@ -10,7 +10,7 @@ Car Lane game implementation with HTML CSS HTMLCanvas and TS
 1. clone the repo by
 
 ```
-https://github.com/BikramNischal/car-lane.git
+git clone https://github.com/BikramNischal/car-lane.git
 ```
 
 2. change to project directory
