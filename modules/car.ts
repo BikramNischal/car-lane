@@ -43,6 +43,7 @@ class Car {
 
 	resetY() {
 		this.y = 0 - 150;
+		this.move += 5 ;
 	}
 
 	collision(otherCar: Car) {
