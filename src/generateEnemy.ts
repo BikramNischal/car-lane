@@ -18,6 +18,7 @@ export default function generateEnemy() {
         const lane:number = generateRandomNumber(3);
         if(lanes.indexOf(lane) !== -1)  continue;
         lanes.push(lane);
+
         // creates car with postion x,y, width, hegith and image
         // here x position = lanecenter - imagewidth/2
         //similary y postion = canvasHeight - imageheight

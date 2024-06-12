@@ -21,11 +21,28 @@ const endBtn = document.querySelector(".btn--restart") as HTMLButtonElement;
 // creates car with postion x,y, width, hegith and image
 // here x position = lanecenter - imagewidth/2
 //similary y postion = canvasHeight - imageheight
+//player car
+let score = 0;
+let car = new Car(
+	laneData[1] - 75,
+	canvasHeight - 150,
+	150,
+	150,
+	"./player.png"
+);
 
-function startGame() {
+// enemy cars
+let allEnemy: Enemy[] = generateEnemy();
+let enemyOnScreen = generateRandomNumber(allEnemy.length);
 
-    //player car
-	const car = new Car(
+function displayScore() {
+	ctx.fillStyle = "white";
+	ctx.font = "50px Arial";
+	ctx.fillText("Score : " + score, 10, 100);
+}
+
+function resetGame() {
+	car = new Car(
 		laneData[1] - 75,
 		canvasHeight - 150,
 		150,
@@ -33,25 +50,29 @@ function startGame() {
 		"./player.png"
 	);
 
-    // enemy cars 
-	let allEnemy: Enemy[] = generateEnemy();
-	let enemyOnScreen = generateRandomNumber(allEnemy.length);
+	allEnemy = generateEnemy();
+	enemyOnScreen = generateRandomNumber(allEnemy.length);
+	score = 0;
+}
 
-
+function startGame() {
 	const game = setInterval(() => {
 		let reset: boolean = false;
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+		displayScore();
 		for (let i = 0; i < enemyOnScreen; ++i) {
 			allEnemy[i].car.moveDown();
 			allEnemy[i].car.drawCar();
 
 			if (car.collision(allEnemy[i].car)) {
 				showEndScreen();
+				resetGame();
 				clearInterval(game);
 			}
 
 			if (allEnemy[i].car.y > canvasHeight) {
 				allEnemy[i].car.resetY();
+				score += 1;
 				reset = true;
 			}
 		}
@@ -92,3 +113,5 @@ endBtn.onclick = () => {
 	showGameScreen();
 	startGame();
 };
+
+export { resetGame, displayScore };

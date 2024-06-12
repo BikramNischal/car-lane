@@ -3,6 +3,7 @@ import Line, { laneWidth, roadlines } from "../modules/roadlines.ts";
 import { canvas, ctx } from "../modules/canvas.ts";
 import {Enemy } from "./generateEnemy.ts";
 import { showEndScreen } from "../windows/gamewindow.ts";
+import { resetGame, displayScore } from "./main.ts";
 
 //left and right movement animation
 function movementAnimation(
@@ -20,13 +21,18 @@ function movementAnimation(
 		}
 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		displayScore();
 		lines.forEach((line) => {
 			line.drawRoadLine();
 		});
 
 		enemyList.forEach((enemy) => {
 			enemy.car.drawCar();
-			if(car.collision(enemy.car)) showEndScreen();
+			if(car.collision(enemy.car)) {
+				showEndScreen();
+				resetGame();
+				clearInterval(animation);
+			}
 		});
 		car.drawCar();
 
@@ -36,7 +42,8 @@ function movementAnimation(
 			clearInterval(animation);
 
 		if (car.x < 0 || car.x + car.w > canvas.width) {
-			console.log("!!Crash!!");
+			showEndScreen();
+			resetGame();
 			clearInterval(animation);
 		}
 	}, 10);
