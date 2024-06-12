@@ -37,13 +37,12 @@ class Car {
 		this.x -= this.move;
 	}
 
-	moveDown() {
-		this.y += this.move;
+	moveDown(move:number) {
+		this.y += move;
 	}
 
 	resetY() {
-		this.y = 0 - 150;
-		this.move += 5 ;
+		this.y = 0 - this.h;
 	}
 
 	collision(otherCar: Car) {
@@ -53,7 +52,6 @@ class Car {
 			this.y < otherCar.y + otherCar.h &&
 			this.y + this.h > otherCar.y
 		) {
-			console.log("collision");
 			return true;
 		}
 	}

@@ -15,7 +15,7 @@ export default function generateEnemy() {
     const enemyList: Enemy[] = [];
 	for (let i = 0; i < 4; ++i) {
         const imgIndex = generateRandomNumber(2);
-        const lane:number = generateRandomNumber(3);
+        const lane:number = generateRandomNumber(4);
         if(lanes.indexOf(lane) !== -1)  continue;
         lanes.push(lane);
 

@@ -3,6 +3,8 @@ import { ctx, canvas } from "./canvas.ts";
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 
+
+// road divider line 
 class Line {
 	x: number;
 	y: number;
@@ -15,7 +17,7 @@ class Line {
 		posy: number,
 		width: number,
 		height: number,
-		dy: number = 5
+		dy: number = 3
 	) {
 		this.x = posx;
 		this.y = posy;
@@ -52,7 +54,7 @@ const laneData:Data = {
 	'3': laneWidth/2 + 3 * laneWidth,
 }
 
-// lane dividers 
+// generate lane dividers 
 const roadlines: Line[] = [];
 const lineLeft1 = new Line(canvasWidth / 4, 0, 10, 200);
 const lineMiddle1 = new Line(canvasWidth / 2, 0, 10, 200);

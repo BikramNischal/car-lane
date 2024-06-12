@@ -1,9 +1,9 @@
 import generateRandomNumber from "../utils/generaterandom.ts";
 import { canvas, ctx } from "../modules/canvas.ts";
 import {
-	showStartScreen,
-	showGameScreen,
-	showEndScreen,
+    showStartScreen,
+    showGameScreen,
+    showEndScreen,
 } from "../windows/gamewindow.ts";
 import Car from "../modules/car.ts";
 import generateEnemy from "./generateEnemy.ts";
@@ -18,100 +18,128 @@ const canvasHeight = canvas.height;
 const startBtn = document.querySelector(".btn--start") as HTMLButtonElement;
 const endBtn = document.querySelector(".btn--restart") as HTMLButtonElement;
 
-// creates car with postion x,y, width, hegith and image
-// here x position = lanecenter - imagewidth/2
-//similary y postion = canvasHeight - imageheight
-//player car
 let score = 0;
+let gameInterval: ReturnType<typeof setInterval> | null = null;
 let car = new Car(
-	laneData[1] - 75,
-	canvasHeight - 150,
-	150,
-	150,
-	"./player.png"
+    laneData[1] - 75,
+    canvasHeight - 150,
+    150,
+    150,
+    "./player.png"
 );
 
-// enemy cars
+
+// get Enemy cars
 let allEnemy: Enemy[] = generateEnemy();
-let enemyOnScreen = generateRandomNumber(allEnemy.length);
+// get random number of enemy between 1 and 4
+const getEnemyNumber = (num: number) => {
+    let enemy = generateRandomNumber(num);
+    return enemy ? enemy : 2;
+};
+
+let enemyOnScreen = getEnemyNumber(allEnemy.length);
+let enemyMove = 3;
 
 function displayScore() {
-	ctx.fillStyle = "white";
-	ctx.font = "50px Arial";
-	ctx.fillText("Score : " + score, 10, 100);
+    ctx.fillStyle = "white";
+    ctx.font = "50px Arial";
+    ctx.fillText("Score : " + score, 10, 100);
 }
 
 function resetGame() {
-	car = new Car(
-		laneData[1] - 75,
-		canvasHeight - 150,
-		150,
-		150,
-		"./player.png"
-	);
+    car = new Car(
+        laneData[1] - 75,
+        canvasHeight - 150,
+        150,
+        150,
+        "./player.png"
+    );
 
-	allEnemy = generateEnemy();
-	enemyOnScreen = generateRandomNumber(allEnemy.length);
-	score = 0;
+    allEnemy = generateEnemy();
+    enemyOnScreen = getEnemyNumber(allEnemy.length);
+    score = 0;
+    enemyMove = 3;
+
+    if (gameInterval !== null) {
+        clearInterval(gameInterval);
+        gameInterval = null;
+    }
 }
 
+// main game function
 function startGame() {
-	const game = setInterval(() => {
-		let reset: boolean = false;
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-		displayScore();
-		for (let i = 0; i < enemyOnScreen; ++i) {
-			allEnemy[i].car.moveDown();
-			allEnemy[i].car.drawCar();
+    if (gameInterval !== null) return;
 
-			if (car.collision(allEnemy[i].car)) {
-				showEndScreen();
-				resetGame();
-				clearInterval(game);
-			}
+    gameInterval = setInterval(() => {
+        let reset = false;
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        displayScore();
 
-			if (allEnemy[i].car.y > canvasHeight) {
-				allEnemy[i].car.resetY();
-				score += 1;
-				reset = true;
-			}
-		}
+		// render enemy cars
+        for (let i = 0; i < enemyOnScreen; ++i) {
+            allEnemy[i].car.moveDown(enemyMove);
+            allEnemy[i].car.drawCar();
 
-		if (reset) {
-			allEnemy = generateEnemy();
-			const tempRand = generateRandomNumber(allEnemy.length);
-			enemyOnScreen = tempRand ? tempRand : 2;
-			reset = false;
-		}
+			// check collision between cars
+            if (car.collision(allEnemy[i].car)) {
+                showEndScreen();
+                clearInterval(gameInterval!);
+                gameInterval = null;
+                resetGame();
+                return;
+            }
 
-		roadlines.forEach((line) => {
-			line.drawRoadLine();
-			line.move();
-		});
-		car.drawCar();
-	}, 10);
+			// reset enemy cars if it goes out canvas height
+            if (allEnemy[i].car.y > canvasHeight) {
+                allEnemy[i].car.resetY();
+                score += 1;
+                enemyMove += 0.3;
+                reset = true;
+            }
+        }
 
-	document.addEventListener("keydown", (event) => {
-		if (event.key === "ArrowRight") {
-			rightArrowPress(car, allEnemy);
-		}
+		// get new enemys after cars move out of canavas height
+        if (reset) {
+            allEnemy = generateEnemy();
+            enemyOnScreen = getEnemyNumber(allEnemy.length);
+            reset = false;
+        }
 
-		if (event.key === "ArrowLeft") {
-			leftArrowPress(car, allEnemy);
-		}
-	});
+		// draw road lanes
+        roadlines.forEach((line) => {
+            line.drawRoadLine();
+            line.move();
+        });
+
+        car.drawCar();
+    }, 10);
 }
+
+// even detection for left and right arrrow key
+document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+        rightArrowPress(car, allEnemy);
+    }
+
+    if (event.key === "ArrowLeft") {
+        leftArrowPress(car, allEnemy);
+    }
+});
 
 showStartScreen();
 
+
+// display game window on start button click
 startBtn.onclick = () => {
-	showGameScreen();
-	startGame();
+    showGameScreen();
+    startGame();
 };
 
+//display game window on restart button click
 endBtn.onclick = () => {
-	showGameScreen();
-	startGame();
+    resetGame();
+    showGameScreen();
+    startGame();
 };
 
 export { resetGame, displayScore };
